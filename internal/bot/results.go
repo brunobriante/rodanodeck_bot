@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
-	"log"
 	"strconv"
 	"strings"
 
@@ -17,14 +16,12 @@ func CreateResult(app SteamApp) tele.Result {
 	gameData := GameData{app, protondb, sdhq}
 
 	var msg bytes.Buffer
-	// tlp, err := template.ParseFiles("message.tmpl")
 	tlp, err := template.New("message.tmpl").Funcs(template.FuncMap{"ToUpper": strings.ToUpper, "ToPercentage": RatingPercentage, "ToStars": RatingStar, "BoolEmoji": BoolEmoji}).ParseFiles("message.tmpl")
 	if err != nil {
-		log.Fatal(err)
+		fmt.Print("[CreateResult-Template]")
+		fmt.Println(err)
 	}
 	tlp.Execute(&msg, gameData)
-
-	fmt.Println(RatingStar(sdhq.Acf.SdhqRating))
 
 	result := &tele.PhotoResult{
 		URL:      app.Logo,

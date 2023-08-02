@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html"
 	"net/http"
+	"strconv"
 )
 
 type SteamApp struct {
@@ -17,13 +18,20 @@ type SteamApp struct {
 func SearchSteam(input string) []SteamApp {
 	games := []SteamApp{}
 
-	res, _ := http.Get(fmt.Sprintf("https://steamcommunity.com/actions/SearchApps/%s", html.EscapeString(input)))
+	res, err := http.Get(fmt.Sprintf("https://steamcommunity.com/actions/SearchApps/%s", html.EscapeString(input)))
+	if err != nil {
+		fmt.Print("[SearchSteam-Request]")
+		fmt.Println(err)
+	}
 	if res.StatusCode == http.StatusOK {
 		dec := json.NewDecoder(res.Body)
 		err := dec.Decode(&games)
 		if err != nil {
+			fmt.Print("[SearchSteam-Decode]")
 			fmt.Println(err)
 		}
+	} else {
+		fmt.Println(("[SearchSteam-Request] StatusCode Failed: " + strconv.Itoa(res.StatusCode)))
 	}
 
 	return games

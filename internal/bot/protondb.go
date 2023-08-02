@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 )
 
 type ProtonDBApp struct {
@@ -17,13 +18,21 @@ type ProtonDBApp struct {
 
 func SearchProtonDB(steamId string) ProtonDBApp {
 	game := ProtonDBApp{}
-	res, _ := http.Get(fmt.Sprintf("https://www.protondb.com/api/v1/reports/summaries/%s.json", steamId))
+	res, err := http.Get(fmt.Sprintf("https://www.protondb.com/api/v1/reports/summaries/%s.json", steamId))
+	if err != nil {
+		fmt.Print("[SearchProtonDB-Request]")
+		fmt.Println(err)
+	}
+
 	if res.StatusCode == http.StatusOK {
 		dec := json.NewDecoder(res.Body)
 		err := dec.Decode(&game)
 		if err != nil {
+			fmt.Print("[SearchProtonDB-Decode]")
 			fmt.Println(err)
 		}
+	} else {
+		fmt.Println(("[SearchProtonDB-Request] StatusCode Failed: " + strconv.Itoa(res.StatusCode)))
 	}
 
 	return game
