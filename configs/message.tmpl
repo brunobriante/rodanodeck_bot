@@ -13,4 +13,7 @@
       Estabilidade: {{ .SDHQ.Acf.SdhqRatingCategories.Stability | ToStars }}
       Controles: {{ .SDHQ.Acf.SdhqRatingCategories.Controls | ToStars }}
       Bateria: {{ .SDHQ.Acf.SdhqRatingCategories.Battery | ToStars }}
+{{ else }}
+<b><i>SDHQ</i></b>
+    Sem Review
 {{ end }}
