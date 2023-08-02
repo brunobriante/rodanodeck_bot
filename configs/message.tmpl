@@ -1,0 +1,16 @@
+<b>{{ .Steam.Name }} [<a href="https://store.steampowered.com/app/{{ .Steam.AppId }}">Steam</a>]</b>
+
+<b><i>ShareDeck</i> [<a href="https://sharedeck.games/apps/{{ .Steam.AppId }}">Configs</a>]</b>
+<b><i>ProtonDB</i> [<a href="https://www.protondb.com/app/{{ .Steam.AppId }}">+ Info</a>]</b>
+    Tier: <i>{{ .ProtonDB.TrendingTier | ToUpper }}</i>
+    Nota: <b>{{ .ProtonDB.Score | ToPercentage }}%</b>
+{{ if ne .SDHQ.Link ""}}
+<b><i>SDHQ</i> [<a href="{{ .SDHQ.Link }}">+ Info</a>]</b>
+    Best on Deck: {{ .SDHQ.Acf.BestOnDeck | BoolEmoji }}
+    Nota: {{ .SDHQ.Acf.SdhqRating | ToStars }}
+      Performance: {{ .SDHQ.Acf.SdhqRatingCategories.Performance | ToStars }}
+      Visual: {{ .SDHQ.Acf.SdhqRatingCategories.Visuals | ToStars }}
+      Estabilidade: {{ .SDHQ.Acf.SdhqRatingCategories.Stability | ToStars }}
+      Controles: {{ .SDHQ.Acf.SdhqRatingCategories.Controls | ToStars }}
+      Bateria: {{ .SDHQ.Acf.SdhqRatingCategories.Battery | ToStars }}
+{{ end }}
